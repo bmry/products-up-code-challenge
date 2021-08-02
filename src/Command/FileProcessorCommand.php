@@ -6,6 +6,7 @@ namespace App\Command;
 use App\Service\FileProcessor\FileProcessorFactory;
 use App\Exception\ProductsUpException;
 use App\Utility\FileUtil;
+use App\Utility\GoogleSheetUtil;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -47,14 +48,7 @@ class FileProcessorCommand extends Command
                 'path-to-file',
                 InputArgument::REQUIRED,
                 'Path to file'
-            )
-            ->addOption(
-                'file-path',
-                'f',
-                InputOption::VALUE_REQUIRED,
-                'Please provide file location'
-            )
-        ;
+            );
     }
 
     /**

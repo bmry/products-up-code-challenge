@@ -11,7 +11,7 @@ namespace App\Utility;
 
 class GoogleSheetUtil
 {
-    public static function convertToSheetValue($values)
+    public static function convertArrayToSpreadsheetValue($values)
     {
         $rowValues = [];
 
@@ -26,6 +26,28 @@ class GoogleSheetUtil
         }
 
         return $rowValues;
+    }
+
+
+    public static function buildHeaderRange(int $columnLenght, $start= 'A')
+    {
+        $ranges = [];
+
+        $ranges [] = $start;
+
+        for ($i = $start, $i < $columnLenght; $i++;) {
+            $ranges[] = $i;
+
+            if(count($ranges) == $columnLenght){
+                break;
+            }
+        }
+
+        $firstRange = $ranges[0].'1';
+        $lastRange = $ranges[$columnLenght-1].'1';
+        $headerRange = $firstRange.':'.$lastRange;
+
+        return $headerRange;
     }
 
 }

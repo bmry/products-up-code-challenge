@@ -9,8 +9,6 @@ use App\Utility\GoogleSheetUtil;
 
 class GoogleSheetXMLWriter implements ContentWriterInterface
 {
-    const HEADER_RANGE='A1:R1';
-
     private $googleSheetAPIService;
 
     public function __construct(GoogleSheetAPIService $googleSheetAPIService)
@@ -26,16 +24,17 @@ class GoogleSheetXMLWriter implements ContentWriterInterface
     {
         $content = json_decode($content->getContent(), TRUE);
         $spreadSheet = $this->googleSheetAPIService->createSpreadSheet();
-        $spreadSheetId = $spreadSheet->getSpreadsheetId();
-        $header = $this->googleSheetAPIService->getHeader($spreadSheetId);
-        $headerValues = GoogleSheetUtil::convertToSheetValue(array_keys($content));
+        $spreadSheetId = '1SLWLy1hWN__AzF4Kgr_wN0EglLQZiJeYJQq9NzAYL_4';//$spreadSheet->getSpreadsheetId();
+        $range = GoogleSheetUtil::buildHeaderRange(count(array_keys($content)));
+        $header = $this->googleSheetAPIService->getHeader($spreadSheetId,$range );
+        $headerValues = GoogleSheetUtil::convertArrayToSpreadsheetValue(array_keys($content));
 
         if(is_null($header)) {
-            $this->googleSheetAPIService->writeToSheet($spreadSheetId,self::HEADER_RANGE, $headerValues );
+            $this->googleSheetAPIService->writeToSheet($spreadSheetId, $headerValues,$range);
         }
 
-        $sheetRowValues = GoogleSheetUtil::convertToSheetValue(array_values($content));
-        $this->googleSheetAPIService->writeToSheet($spreadSheetId,self::HEADER_RANGE, $sheetRowValues);
+        $sheetRowValues = GoogleSheetUtil::convertArrayToSpreadsheetValue(array_values($content));
+        $this->googleSheetAPIService->writeToSheet($spreadSheetId, $sheetRowValues, $range);
 
 
     }

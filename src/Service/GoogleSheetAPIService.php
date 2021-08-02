@@ -15,6 +15,7 @@ use Psr\Log\LoggerInterface;
 class GoogleSheetAPIService
 {
     const SPREADSHEET_NAME =  'Catalog';
+    const HEADER_RANGE='A1:B1';
 
     private $googleCredential;
 
@@ -72,7 +73,7 @@ class GoogleSheetAPIService
      * @param array $value
      * @param $range
      */
-    public function writeToSheet(string $spreadsheetId, $range, $values)
+    public function writeToSheet(string $spreadsheetId, $values, $range)
     {
         $body = new \Google_Service_Sheets_ValueRange([
             'values' =>[ $values ],
@@ -87,9 +88,9 @@ class GoogleSheetAPIService
 
     }
 
-    public function getHeader($spreadSheetId)
+    public function getHeader($spreadSheetId, $range)
     {
-       $response =  $this->getSheetService()->spreadsheets_values->get($spreadSheetId, 'A1:R1');
+       $response =  $this->getSheetService()->spreadsheets_values->get($spreadSheetId, $range);
 
        return $response->getValues();
     }
