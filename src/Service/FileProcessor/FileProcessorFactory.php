@@ -1,30 +1,30 @@
 <?php
 
-namespace App\Service\ContentProcessor;
+namespace App\Service\FileProcessor;
 
 
 use App\Exception\UnsupportedFileException;
 
 
-class ContentProcessorFactory
+class FileProcessorFactory
 {
     private  $xmlContentProcessor;
 
     /**
      * ContentProcessorFactory constructor.
-     * @param \App\Service\ContentProcessor\XMLContentProcessor $XMLContentProcessor
+     * @param \App\Service\FileProcessor\XMLFileProcessor $XMLContentProcessor
      */
-    public function __construct(XMLContentProcessor $XMLContentProcessor)
+    public function __construct(XMLFileProcessor $XMLContentProcessor)
     {
         $this->xmlContentProcessor = $XMLContentProcessor;
     }
 
     /**
      * @param string $type
-     * @return \App\Service\ContentProcessor\ContentProcessorInterface
+     * @return \App\Service\FileProcessor\FileProcessorInterface
      * @throws UnsupportedFileException
      */
-    public function build(string $type): ContentProcessorInterface
+    public function build(string $type): FileProcessorInterface
     {
         switch ($type){
             case 'xml':

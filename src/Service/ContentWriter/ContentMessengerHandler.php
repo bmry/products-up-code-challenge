@@ -10,7 +10,7 @@ namespace App\Service\ContentWriter;
 
 
 use App\Exception\ProductsUpException;
-use App\Service\ContentProcessor\Content;
+use App\Service\FileProcessor\FileContent;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
@@ -33,9 +33,9 @@ class ContentMessengerHandler implements MessageHandlerInterface
     }
 
     /**
-     * @param Content $content
+     * @param FileContent $content
      */
-    public function __invoke(Content $content)
+    public function __invoke(FileContent $content)
     {
         try{
             $contentWriter = $this->contentWriterFactory->build(ContentWriterInterface::GOOGLE_XML_WRITER);

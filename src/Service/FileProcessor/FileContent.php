@@ -1,10 +1,10 @@
 <?php
 
 
-namespace App\Service\ContentProcessor;
+namespace App\Service\FileProcessor;
 
 
-class Content
+class FileContent
 {
     private $content;
 

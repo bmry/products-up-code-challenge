@@ -3,11 +3,11 @@
 namespace App\Service\ContentWriter;
 
 
-use App\Service\ContentProcessor\Content;
+use App\Service\FileProcessor\FileContent;
 
 interface ContentWriterInterface
 {
     const GOOGLE_XML_WRITER = 'google-xml';
 
-    public function write(Content $content): void;
+    public function write(FileContent $content): void;
 }

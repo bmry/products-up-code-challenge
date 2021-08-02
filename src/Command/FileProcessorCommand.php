@@ -3,49 +3,58 @@
 
 namespace App\Command;
 
-use App\Service\ContentProcessor\ContentProcessorFactory;
+use App\Service\FileProcessor\FileProcessorFactory;
 use App\Exception\ProductsUpException;
 use App\Utility\FileUtil;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 
-class ContentProcessorCommand extends Command
+class FileProcessorCommand extends Command
 {
     /**
-     * @var ContentProcessorFactory
+     * @var FileProcessorFactory
      */
     private $contentProcessorFactory;
-    /**
-     * @var string
-     */
-    private $dataSource;
+
     /**
      * @var LoggerInterface
      */
     private $logger;
 
     public function __construct(
-        ContentProcessorFactory $contentProcessorFactory,
-        string  $dataSource,
+        FileProcessorFactory $contentProcessorFactory,
         LoggerInterface $logger
     )
     {
         $this->contentProcessorFactory = $contentProcessorFactory;
-        $this->dataSource = $dataSource;
         $this->logger = $logger;
 
         parent::__construct();
     }
 
-    protected static $defaultName = 'content-processor:start';
+    protected static $defaultName = 'file-processor:start';
 
     protected function configure(): void
     {
         $this
-            ->setDescription('Process File Content');
+            ->setDescription('Process File Content and Push to GoogleSheet')
+            ->addArgument(
+                'path-to-file',
+                InputArgument::REQUIRED,
+                'Path to file'
+            )
+            ->addOption(
+                'file-path',
+                'f',
+                InputOption::VALUE_REQUIRED,
+                'Please provide file location'
+            )
+        ;
     }
 
     /**
@@ -56,11 +65,12 @@ class ContentProcessorCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $fileType = FileUtil::getFileType($this->dataSource);
+        $filePath = $input->getArgument('path-to-file');
+        $fileType = FileUtil::getFileType($filePath);
 
         try{
             $contentProcessor = $this->contentProcessorFactory->build($fileType);
-            $contentProcessor->process();
+            $contentProcessor->process($filePath);
         }catch (ProductsUpException $productsUpException) {
 
             $this->logger->error($productsUpException);

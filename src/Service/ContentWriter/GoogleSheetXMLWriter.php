@@ -2,7 +2,7 @@
 
 namespace App\Service\ContentWriter;
 
-use App\Service\ContentProcessor\Content;
+use App\Service\FileProcessor\FileContent;
 use App\Service\GoogleSheetAPIService;
 use App\Utility\GoogleSheetUtil;
 
@@ -19,10 +19,10 @@ class GoogleSheetXMLWriter implements ContentWriterInterface
     }
 
     /**
-     * @param Content $content
+     * @param FileContent $content
      * @throws \App\Exception\SheetAPIServiceException
      */
-    public function write(Content $content): void
+    public function write(FileContent $content): void
     {
         $content = json_decode($content->getContent(), TRUE);
         $spreadSheet = $this->googleSheetAPIService->createSpreadSheet();
