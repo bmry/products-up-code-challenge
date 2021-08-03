@@ -4,13 +4,10 @@
 namespace App\Unit\Tests;
 
 
-use App\Exception\UnreadableFileException;
-use App\Service\FileProcessor\FileContent;
 use App\Service\FileProcessor\ReaderFactory;
 use App\Service\FileProcessor\XMLFileProcessor;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 class XMLFileProcessorTest extends TestCase

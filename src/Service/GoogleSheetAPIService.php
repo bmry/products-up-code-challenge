@@ -16,14 +16,12 @@ class GoogleSheetAPIService
 {
     const SPREADSHEET_NAME =  'Catalog';
     const HEADER_RANGE='A1:B1';
-
-    private $googleCredential;
+    const CREDENTIAL_DIR='/root/';
 
     private $logger;
 
-    public function __construct(LoggerInterface $logger, string $googleCredential)
+    public function __construct(LoggerInterface $logger)
     {
-        $this->googleCredential = $googleCredential;
         $this->logger = $logger;
     }
 
@@ -34,10 +32,11 @@ class GoogleSheetAPIService
     private function getClient()
     {
         $client = new \Google_Client();
+        $googleCredential= self::CREDENTIAL_DIR.getenv('GOOGLE_APPLICATION_CREDENTIALS');
         $client->setApplicationName('ProductsUp Code Challenge');
         $client->setScopes([\Google_Service_Sheets::SPREADSHEETS]);
         $client->setAccessType('offline');
-        $client->setAuthConfig($this->googleCredential);
+        $client->setAuthConfig($googleCredential);
 
         return $client;
     }
