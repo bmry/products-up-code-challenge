@@ -21,6 +21,10 @@ class XMLFileProcessor implements FileProcessorInterface
      * @var MessageBusInterface
      */
     private $messageBus;
+    /**
+     * @var ReaderFactory
+     */
+    private $readerFactory;
 
 
     /**
@@ -31,16 +35,18 @@ class XMLFileProcessor implements FileProcessorInterface
      */
     public function __construct(
         LoggerInterface $logger,
-        MessageBusInterface $messageBus)
+        MessageBusInterface $messageBus,
+        ReaderFactory $readerFactory
+    )
     {
         $this->logger = $logger;
         $this->messageBus = $messageBus;
-
+        $this->readerFactory = $readerFactory;
     }
 
     public function process(string $filePath): void
     {
-        $xmlReader = new \XMLReader();
+        $xmlReader = $this->readerFactory->build('xml');
         $xmlContent =  $xmlReader->open($filePath);
 
         if(false === $xmlContent){
@@ -54,9 +60,9 @@ class XMLFileProcessor implements FileProcessorInterface
             try{
                 $element = new \SimpleXMLElement($xmlReader->readOuterXML());
                 $items = $element->item;
-
                 foreach ($items as $item) {
                     $this->messageBus->dispatch(new FileContent(json_encode($item)));
+
                 }
 
             }catch (\Exception $exception) {

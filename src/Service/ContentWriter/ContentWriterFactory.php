@@ -3,7 +3,6 @@
 namespace App\Service\ContentWriter;
 
 
-
 class ContentWriterFactory
 {
     private  $googleSheetXMLWriter;

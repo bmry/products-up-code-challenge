@@ -62,20 +62,22 @@ class FileProcessorCommand extends Command
     {
         $filePath = $input->getArgument('path-to-file');
         $fileType = FileUtil::getFileType($filePath);
-        $output->writeln("<info>File Processing.</info>");
-        $output->writeln("<info>==========================</info>");
 
         try{
+
             $output->writeln("<info>Processing Started ...</info>");
             $contentProcessor = $this->contentProcessorFactory->build($fileType);
             $contentProcessor->process($filePath);
+
         }catch (ProductsUpException $productsUpException) {
             $this->logger->error($productsUpException);
             $output->writeln("<error>{$productsUpException->getMessage()}</error>");
+
             return Command::FAILURE;
         }
 
         $output->writeln("<info>File Processing Completed</info>");
+
         return Command::SUCCESS;
 
     }

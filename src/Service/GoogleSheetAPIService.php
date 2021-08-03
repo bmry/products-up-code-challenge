@@ -73,7 +73,7 @@ class GoogleSheetAPIService
      * @param array $value
      * @param $range
      */
-    public function writeToSheet(string $spreadsheetId, $values, $range)
+    public function writeToSheet(string $spreadsheetId, $values, $range): void
     {
         $body = new \Google_Service_Sheets_ValueRange([
             'values' =>[ $values ],
@@ -85,7 +85,6 @@ class GoogleSheetAPIService
         ];
 
         $this->getSheetService()->spreadsheets_values->append($spreadsheetId, $range, $body,$params);
-
     }
 
     public function getHeader($spreadSheetId, $range)

@@ -24,7 +24,7 @@ class GoogleSheetXMLWriter implements ContentWriterInterface
     {
         $content = json_decode($content->getContent(), TRUE);
         $spreadSheet = $this->googleSheetAPIService->createSpreadSheet();
-        $spreadSheetId = '1SLWLy1hWN__AzF4Kgr_wN0EglLQZiJeYJQq9NzAYL_4';//$spreadSheet->getSpreadsheetId();
+        $spreadSheetId = $spreadSheet->getSpreadsheetId();
         $range = GoogleSheetUtil::buildHeaderRange(count(array_keys($content)));
         $header = $this->googleSheetAPIService->getHeader($spreadSheetId,$range );
         $headerValues = GoogleSheetUtil::convertArrayToSpreadsheetValue(array_keys($content));
