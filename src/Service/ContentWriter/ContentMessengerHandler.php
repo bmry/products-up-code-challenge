@@ -8,8 +8,6 @@
 
 namespace App\Service\ContentWriter;
 
-
-use App\Exception\ProductsUpException;
 use App\Service\FileProcessor\FileContent;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
@@ -37,13 +35,9 @@ class ContentMessengerHandler implements MessageHandlerInterface
      */
     public function __invoke(FileContent $content)
     {
-        try{
-            $contentWriter = $this->contentWriterFactory->build(ContentWriterInterface::GOOGLE_XML_WRITER);
-            $contentWriter->write($content);
+        $contentWriter = $this->contentWriterFactory->build(ContentWriterInterface::GOOGLE_XML_WRITER);
+        $contentWriter->write($content);
 
-        }catch (ProductsUpException $productsUpException){
-            $this->logger->error($productsUpException);
-        }
 
     }
 
