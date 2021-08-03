@@ -37,8 +37,6 @@ class ContentMessengerHandler implements MessageHandlerInterface
     {
         $contentWriter = $this->contentWriterFactory->build(ContentWriterInterface::GOOGLE_XML_WRITER);
         $contentWriter->write($content);
-
-
     }
 
 }
