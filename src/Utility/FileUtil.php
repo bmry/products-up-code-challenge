@@ -10,8 +10,11 @@ class FileUtil
     {
         $fileInfo =   pathinfo($filePath);
 
-        return $fileInfo['extension'];
+        if(isset($fileInfo['extension'])){
+            return $fileInfo['extension'];
+        }
 
+        return '';
     }
 
     public static function getFullPath($filePath)

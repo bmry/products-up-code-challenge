@@ -33,6 +33,7 @@ RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
 
 WORKDIR /var/www
 
+
 COPY php_custom_dev.ini /usr/local/etc/php/conf.d/
 COPY start.sh /usr/local/bin/
 ENTRYPOINT ["/usr/local/bin/start.sh"]

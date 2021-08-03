@@ -50,11 +50,8 @@ class XMLFileProcessor implements FileProcessorInterface
     public function process(string $filePath): void
     {
         $xmlReader = $this->readerFactory->build('xml');
-        $xmlContent =  $xmlReader->open(FileUtil::getFullPath($filePath));
-
-        if(false === $xmlContent){
-            throw new UnreadableFileException("Unable to read file");
-        }
+        $file = file_get_contents(FileUtil::getFullPath($filePath));
+        $xmlReader->XML($file);
 
         while ($xmlReader->read() && $xmlReader->name !== 'catalog');
 
