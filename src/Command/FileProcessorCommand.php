@@ -61,7 +61,9 @@ class FileProcessorCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $output->writeln("<info>Application will look for google credential in your root directory!.</info>");
+
+        $output->writeln("<info>Application will look for google credential in the host home directory!.</info>");
+
 
         $filePath = $input->getArgument('path-to-file');
         $fileType = FileUtil::getFileType($filePath);

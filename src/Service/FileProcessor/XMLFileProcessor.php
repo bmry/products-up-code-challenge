@@ -3,8 +3,11 @@
 
 namespace App\Service\FileProcessor;
 
+use App\Exception\ProductsUpException;
 use App\Exception\UnreadableFileException;
+use App\Utility\FileUtil;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 /**
@@ -47,7 +50,7 @@ class XMLFileProcessor implements FileProcessorInterface
     public function process(string $filePath): void
     {
         $xmlReader = $this->readerFactory->build('xml');
-        $xmlContent =  $xmlReader->open($filePath);
+        $xmlContent =  $xmlReader->open(FileUtil::getFullPath($filePath));
 
         if(false === $xmlContent){
             throw new UnreadableFileException("Unable to read file");
@@ -57,16 +60,15 @@ class XMLFileProcessor implements FileProcessorInterface
 
         while ($xmlReader->name === 'catalog') {
 
+            $element = new \SimpleXMLElement($xmlReader->readOuterXML());
+            $items = $element->item;
+
             try{
-                $element = new \SimpleXMLElement($xmlReader->readOuterXML());
-                $items = $element->item;
                 foreach ($items as $item) {
                     $this->messageBus->dispatch(new FileContent(json_encode($item)));
-
                 }
-
-            }catch (\Exception $exception) {
-                $this->logger->error($exception);
+            }catch (HandlerFailedException $handlerFailedException){
+                throw new ProductsUpException($handlerFailedException->getMessage());
             }
 
 

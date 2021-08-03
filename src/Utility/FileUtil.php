@@ -13,4 +13,13 @@ class FileUtil
         return $fileInfo['extension'];
 
     }
+
+    public static function getFullPath($filePath)
+    {
+        if(strpos($filePath,'http') || strpos($filePath,'ftp') ){
+            return $filePath;
+        }
+
+        return getenv('HOME').'/'.$filePath;
+    }
 }

@@ -8,15 +8,17 @@
 
 namespace App\Service;
 
+use App\Exception\ProductsUpException;
 use App\Exception\SheetAPIServiceException;
+use Google\Exception;
 use Google\Service\Sheets\Spreadsheet;
+use http\Exception\InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 
 class GoogleSheetAPIService
 {
     const SPREADSHEET_NAME =  'Catalog';
     const HEADER_RANGE='A1:B1';
-    const CREDENTIAL_DIR='/root/';
 
     private $logger;
 
@@ -27,12 +29,13 @@ class GoogleSheetAPIService
 
     /**
      * @return \Google_Client
-     * @throws SheetAPIServiceException
+     * @throws ProductsUpException
+     * @throws \Google\Exception
      */
     private function getClient()
     {
         $client = new \Google_Client();
-        $googleCredential= self::CREDENTIAL_DIR.getenv('GOOGLE_APPLICATION_CREDENTIALS');
+        $googleCredential= getenv('HOME').'/'.getenv('GOOGLE_APPLICATION_CREDENTIALS');
         $client->setApplicationName('ProductsUp Code Challenge');
         $client->setScopes([\Google_Service_Sheets::SPREADSHEETS]);
         $client->setAccessType('offline');
