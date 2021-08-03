@@ -11,6 +11,10 @@ class GoogleSheetXMLWriter implements ContentWriterInterface
 {
     private $googleSheetAPIService;
 
+    /**
+     * GoogleSheetXMLWriter constructor.
+     * @param GoogleSheetAPIService $googleSheetAPIService
+     */
     public function __construct(GoogleSheetAPIService $googleSheetAPIService)
     {
         $this->googleSheetAPIService = $googleSheetAPIService;

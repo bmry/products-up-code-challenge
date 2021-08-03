@@ -10,21 +10,20 @@ namespace App\Service;
 
 use App\Exception\ProductsUpException;
 use App\Exception\SheetAPIServiceException;
-use Google\Exception;
 use Google\Service\Sheets\Spreadsheet;
-use http\Exception\InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 
 class GoogleSheetAPIService
 {
-    const SPREADSHEET_NAME =  'Catalog';
     const HEADER_RANGE='A1:B1';
 
     private $logger;
+    private $spreadSheetName;
 
-    public function __construct(LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger, string $spreadSheetName)
     {
         $this->logger = $logger;
+        $this->spreadSheetName = $spreadSheetName;
     }
 
     /**
@@ -57,11 +56,11 @@ class GoogleSheetAPIService
      * @return Spreadsheet|null
      * @throws SheetAPIServiceException
      */
-    public function createSpreadSheet(string $spreadName = self::SPREADSHEET_NAME):?Spreadsheet
+    public function createSpreadSheet():?Spreadsheet
     {
         $spreadsheet = new \Google_Service_Sheets_Spreadsheet([
             'properties' => [
-                'title' => $spreadName
+                'title' => $this->spreadSheetName
             ]
         ]);
 
